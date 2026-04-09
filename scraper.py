@@ -125,10 +125,11 @@ class ReviewScraper:
     def _resolve_url(url):
         """Follow redirects from shortened Google Maps URLs."""
         try:
-            r = http_req.head(
+            r = http_req.get(
                 url,
                 allow_redirects=True,
                 timeout=20,
+                stream=True,
                 headers={
                     "User-Agent": (
                         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
@@ -137,6 +138,7 @@ class ReviewScraper:
                     )
                 },
             )
+            r.close()
             return r.url
         except Exception:
             return url
